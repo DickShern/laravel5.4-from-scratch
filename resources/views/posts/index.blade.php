@@ -1,6 +1,6 @@
-@extends ('layout')
+@extends ('layout.master')
 
-@section ('content')
+@section ('top-header')
 	<section class="jumbotron text-center">
       <div class="container">
         <h1 class="jumbotron-heading">Album example</h1>
@@ -11,8 +11,17 @@
         </p>
       </div>
     </section>
+@endsection
 
-    <div class="album text-muted">
+@section ('content')
+  <div class="col-sm-8 blog-main">
+    @foreach ($posts as $post)
+      @include ('posts.post');
+    @endforeach
+  </div>
+
+    <div class="album text-muted col-sm-8 blog-main">
+
       <div class="container">
 
         <div class="row">

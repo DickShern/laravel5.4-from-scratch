@@ -5,8 +5,11 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
+use \App\Billing\Stripe;
+
 class AppServiceProvider extends ServiceProvider
 {
+    protected $defer = true;
     /**
      * Bootstrap any application services.
      *
@@ -15,7 +18,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        Schema::defaultStringLength(500);
+        Schema::defaultStringLength(191);
+
+        view()->composer('layout.sidebar', function($view){
+            $view->with('archives', \App\Post::archives());
+        });
     }
 
     /**
@@ -25,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        //Service Container
+        $this->app->singleton(Stripe::class, function(){
+            return new Stripe(config('services.stripe.secret'));
+        });
     }
 }

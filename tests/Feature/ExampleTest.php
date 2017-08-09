@@ -7,17 +7,54 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use App\Post;
+
 class ExampleTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * A basic test example.
      *
      * @return void
      */
+    // public function testBasicTest()
+    // {
+    //     // $response = $this->get('/');
+    //     $response = $this->get('/')->assertSee('Album example');
+
+    //     $response->assertStatus(200);
+    // }
+
     public function testBasicTest()
     {
-        $response = $this->get('/');
+        ///Given I have two records in the database that are posts,
+        // and each one is posted a month apart.
+        $first = factory(Post::class)->create();
+        $second = factory(Post::class)->create([
+            'created_at' => \Carbon\Carbon::now()->subMonth()
+        ]);
 
-        $response->assertStatus(200);
+        //When I fetch the archives.
+        $posts = Post::archives();
+
+        //Then the response should be in the proper format.
+        $this->assertEquals([
+                [
+                    "year" => $first->created_at->format('Y'),
+                    // created_at = instace of Carbon
+                    "month" => $first->created_at->format('F'),
+                    "published" => 1
+
+                ],
+
+                [
+                    "year" => $second->created_at->format('Y'),
+                    // created_at = instace of Carbon
+                    "month" => $second->created_at->format('F'),
+                    "published" => 1
+
+                ],
+            ], $posts);
     }
 }
