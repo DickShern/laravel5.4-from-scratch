@@ -25,7 +25,7 @@ class PostController extends Controller
     	// $posts = Post::latest()->get();
     	// OR
         // $posts = Post::orderBy('created_at','desc')->get();
-        // OR
+        // OR with index(Posts $posts)
         // Method injection(passing arguments)
         // $posts = $posts->all();
 

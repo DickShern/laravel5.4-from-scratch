@@ -28,6 +28,7 @@ Route::post('/login', 'SessionsController@store');
 Route::get('/logout', 'SessionsController@destroy');
 
 
+Route::get('posts/tags/{tag}', 'TagsController@index');
 
 
 // dd(resolve('App\Billing\Stripe'));
